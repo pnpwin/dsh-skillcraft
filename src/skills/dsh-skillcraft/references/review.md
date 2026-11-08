@@ -16,7 +16,7 @@ For blind review, prepare A/B artifact labels without arm identity, give the rev
 
 ## Controlled native routing probes
 
-Task mode preloads the skill. To test the description separately, create a spec with `mode:"routing"`; cases use normal `id/split/prompt/files/writable`, with `files:{}` and `writable:[]` allowed. Checks are `{"type":"skill-loaded","expected":true}` or false. The optional body is not preloaded. The native child receives only its name/description and must call `creator_skill` if relevant, then finish. The tool performs the actual exact scoped native registry load.
+Task mode preloads the skill. To test the description separately, create a spec with `mode:"routing"`; cases use normal `id/split/prompt/files/writable`, with `files:{}` and `writable:[]` allowed. Checks are `{"type":"skill-loaded","expected":true}` or false. The optional body is not preloaded. The native child receives only its name/description and must call `dsh_skillcraft_skill` if relevant, then finish. The tool performs the actual exact scoped native registry load.
 
 Use realistic should-trigger/should-not-trigger prompts, especially adjacent near misses. For new skills the no-skill baseline is unavailable; evaluate the candidate's positive/negative routing correctness rather than calling absence of a skill a quality failure. For description revisions give baselineSkill the frozen old version. Retain inputs before optimizing, train on one split and finalize against untouched variants. The report is explicitly a **controlled description-routing probe**, not a measurement of the entire production catalog/search pipeline.
 
@@ -26,6 +26,6 @@ Do not generate twenty vague keyword queries just to meet a quota. Choose enough
 
 After an independently authorized installation, verify actual catalog discovery using `skill_search` and native `skill` in the real target workspace. Record the exact registered skill name/revision/body and the task context. Loading is exposure, not proof of use; completing a task afterwards is association, not by itself causal benefit. Do not install a target in the baseline environment or register a second active mirror under another provider.
 
-## Native skill-loop boundary
+## Native dsh-skillgrowth boundary
 
-The creator workbench never confirms, changes mode, approves, archives, rolls back, or restores skill-loop storage. Keep using native human commands for those decisions. Current auto policy may permit bounded verified additions, but an evaluation artifact here is not an unforgeable skill-loop evaluator receipt. Integrating new evaluator authority requires its own explicit contract, not a copied JSON success flag.
+The creator workbench never confirms, changes mode, approves, archives, rolls back, or restores dsh-skillgrowth storage. Keep using native human commands for those decisions. Current auto policy may permit bounded verified additions, but an evaluation artifact here is not an unforgeable dsh-skillgrowth evaluator receipt. Integrating new evaluator authority requires its own explicit contract, not a copied JSON success flag.

@@ -14,3 +14,5 @@ docs/validation-v0.1.0.md
 .env.*
 .credentials*
 *.log
+src/rename-release.js
+src/finalize-names.js

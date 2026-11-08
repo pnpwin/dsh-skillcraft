@@ -1,38 +1,38 @@
-# DSH skill creator
+# DSH Skillcraft
 
-**v0.1.2 — GitHub release:** package/repository/provider are `dsh-skill-creator`; the skill name and `skill_eval` tool stay unchanged. Scoped case tools use `creator_*`, new run files go under `.dsh-skill-creator/runs/`. Existing experiment data is not deleted or rewritten. This is a naming/layout release, not a new measured quality improvement.
+**v0.1.3 — DSH Skillcraft:** package, repository, provider and skill are `dsh-skillcraft`. The model tool is `dsh_skillcraft`; isolated case tools use `dsh_skillcraft_*`. New outputs go under `.dsh-skillcraft/runs/`; old experiments are retained unchanged. This release renames identifiers, not evaluation methodology or quality claims. [Migration notes](docs/release-v0.1.3.md).
 
 All implementation, build, CLI and benchmark code belongs in `src/`. Root files are documentation, manifests and DSH discovery metadata. Existing `tests/`, `locale/` and resource directories stay in place. See [validation and quality limits](docs/validation-v0.1.2.md).
 
-Native **dsh-skill-creator** for authoring and evaluating DSH skills. The workflow is intent → draft → actual baseline agent behavior → RED/GREEN/REFACTOR → held-out evaluation → improvement. A failing code fixture is not a baseline agent failure.
+Native **dsh-skillcraft** for authoring and evaluating DSH skills. The workflow is intent → draft → actual baseline agent behavior → RED/GREEN/REFACTOR → held-out evaluation → improvement. A failing code fixture is not a baseline agent failure.
 
 v0.1.1 removes migration/history prose: main skill7735→7375characters; full optional resource set23235→19412. These are text lengths, not measured provider tokens. [Scope and checks](docs/context-cleanup-v0.1.1.md).
 
 ## What is installed
 
-- Native skill with [progressive resources](src/skills/dsh-skill-creator/SKILL.md).
-- `skill_eval`: explicit paid native paired task/routing evaluation, owned background jobs, objective finite checks and measured/unknown usage/time.
-- [Offline CLI](src/skills/dsh-skill-creator/scripts/cli.js) for validation/report regeneration; no model calls.
+- Native skill with [progressive resources](src/skills/dsh-skillcraft/SKILL.md).
+- `dsh_skillcraft`: explicit paid native paired task/routing evaluation, owned background jobs, objective finite checks and measured/unknown usage/time.
+- [Offline CLI](src/skills/dsh-skillcraft/scripts/cli.js) for validation/report regeneration; no model calls.
 - [EN](locale/en.json)/[RU](locale/ru.json) display metadata and original [SVG icon](src/icon.svg).
 
-The evaluator never executes generated source or publishes learned skills. It does not change the skill-loop library or policy. Skill-loop uses a separately versioned compact authoring rubric.
+The evaluator never executes generated source or publishes learned skills. It does not change the dsh-skillgrowth library or policy. Skillgrowth uses a separately versioned compact Skillcraft rubric.
 
 ## Install / use
 
 Requires DSH0.2.2-rc.1 and Node>=22. No runtime npm dependencies or installation scripts. Author/install through Plugin Manager, not manual profile manifest edits:
 
 ```json
-{"action":"install_bundle","target":"github:pnpwin/dsh-skill-creator#v0.1.2","enabled":true}
+{"action":"install_bundle","target":"github:pnpwin/dsh-skillcraft#v0.1.3","enabled":true}
 ```
 
-Load `dsh-skill-creator` through normal skill discovery; read [native evaluation](src/skills/dsh-skill-creator/references/evaluation.md) before writing a spec. Then:
+Load `dsh-skillcraft` through normal skill discovery; read [native evaluation](src/skills/dsh-skillcraft/references/evaluation.md) before writing a spec. Then:
 
 ```json
 {"action":"validate","specPath":"evals.json"}
 {"action":"run","specPath":"evals.json","split":"train","maxCalls":18,"timeoutMs":300000}
 ```
 
-Collect the returned native job with `job_output`, cancel with `job_kill`. Report remains available via `skill_eval` action report or artifact files. Use holdout only for final evaluation, not tuning. Reduce maxCalls across iterations so the **sum** stays within the user's experiment allowance.
+Collect the returned native job with `job_output`, cancel with `job_kill`. Report remains available via `dsh_skillcraft` action report or artifact files. Use holdout only for final evaluation, not tuning. Reduce maxCalls across iterations so the **sum** stays within the user's experiment allowance.
 
 ### Boundaries
 

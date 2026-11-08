@@ -2,13 +2,13 @@
   "schemaVersion": 1,
   "mode": "routing",
   "skill": {
-    "name": "dsh-skill-creator",
+    "name": "dsh-skillcraft",
     "description": "Create and evaluate DSH skills with real agent baselines, objective checks, paired comparisons and bounded improvement.",
-    "contentPath": "skills/dsh-skill-creator/SKILL.md",
+    "contentPath": "skills/dsh-skillcraft/SKILL.md",
     "resources": [
-      "skills/dsh-skill-creator/references/evaluation.md",
-      "skills/dsh-skill-creator/references/writing.md",
-      "skills/dsh-skill-creator/references/review.md"
+      "skills/dsh-skillcraft/references/evaluation.md",
+      "skills/dsh-skillcraft/references/writing.md",
+      "skills/dsh-skillcraft/references/review.md"
     ]
   },
   "baselineSkill": null,

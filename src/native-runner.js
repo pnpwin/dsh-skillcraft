@@ -1,9 +1,9 @@
-// Native lifecycle pattern adapted from pnpwin/dsh-skill-loop (MIT).
+// Native lifecycle pattern adapted from pnpwin/dsh-dsh-skillgrowth (MIT).
 import {randomUUID} from 'node:crypto';
 import {performance} from 'node:perf_hooks';
 import {relativePath,usageOf,digest} from './eval-core.js';
-const PROVIDER='dsh-skill-creator-evaluation';
-const TOOLS=['creator_read','creator_write','creator_finish','creator_skill'];
+const PROVIDER='dsh-skillcraft-evaluation';
+const TOOLS=['dsh_skillcraft_read','dsh_skillcraft_write','dsh_skillcraft_finish','dsh_skillcraft_skill'];
 export function createEnvironment(task,skill){
   const files={...task.files},resources=Object.fromEntries(Object.entries(skill?.resources??{}).map(([p,text])=>['.skill/'+p,text]));let finished=false,toolCalls=0;
   return {
@@ -30,19 +30,19 @@ export function createNativeRunner(ctx,{NativeToolExecutor,createUserMessage,own
           try{for await(const chunk of next()){combined.throwIfAborted();if(chunk.type==='usage')usage=usageOf(chunk.usage);yield chunk;}}finally{dispatchTimes.push(performance.now()-before);if(usage)reports.push(usage);}
         });
         const register=(name,description,parameters,execute)=>agentCtx.tools.register({name,description,parameters,output:{schema:{type:'object',additionalProperties:true},render:(_a,value)=>[{type:'text',text:JSON.stringify(value)}]},isConcurrencySafe:()=>false,execute});
-        register('creator_read','Read an allowed in-memory input or skill resource; omit path to list available files.',{type:'object',properties:{path:{type:'string'}},additionalProperties:false},args=>env.read(args));
-        register('creator_write','Write text to an explicitly permitted output path. Source text is never executed.',{type:'object',properties:{path:{type:'string'},content:{type:'string'}},required:['path','content'],additionalProperties:false},args=>env.write(args));
-        register('creator_finish','Finish this task after saving its requested outputs. Objective grading occurs afterwards.',{type:'object',properties:{},additionalProperties:false},(_args,exec)=>{const r=env.finish();exec.concludeTurn();return r;});
+        register('dsh_skillcraft_read','Read an allowed in-memory input or skill resource; omit path to list available files.',{type:'object',properties:{path:{type:'string'}},additionalProperties:false},args=>env.read(args));
+        register('dsh_skillcraft_write','Write text to an explicitly permitted output path. Source text is never executed.',{type:'object',properties:{path:{type:'string'},content:{type:'string'}},required:['path','content'],additionalProperties:false},args=>env.write(args));
+        register('dsh_skillcraft_finish','Finish this task after saving its requested outputs. Objective grading occurs afterwards.',{type:'object',properties:{},additionalProperties:false},(_args,exec)=>{const r=env.finish();exec.concludeTurn();return r;});
         agentCtx.tools.guard(exec=>TOOLS.includes(exec.name)?undefined:'Evaluation permits only its scoped memory-file tools.');
         let loadSkill=async()=>({available:false});
         if(skill){const skills=agentCtx.get('skills');if(!skills)throw Error('case-skills-unavailable');const name='eval-candidate-'+skill.hash.slice(0,24);skills.register({name,description:skill.description,content:skill.content,source:'runtime',provider:PROVIDER,resourceBase:{kind:'opaque',description:'Evaluation-only frozen skill and explicitly snapshotted resources.'}});loadSkill=async()=>{const exact=await skills.get(name,{scope:agent,cwd,signal:combined});if(!exact||exact.provider!==PROVIDER||exact.content!==skill.content)throw Error('candidate-shadowed');loaded=true;return {available:true,name:skill.name,content:exact.content,evaluationOnly:true};};if(mode==='task')await loadSkill();}
-        register('creator_skill','Load the optional skill declared for this case when relevant; no other skills are exposed.',{type:'object',properties:{},additionalProperties:false},loadSkill);
+        register('dsh_skillcraft_skill','Load the optional skill declared for this case when relevant; no other skills are exposed.',{type:'object',properties:{},additionalProperties:false},loadSkill);
       }});
       const agent=handle.agent,cancel=()=>agent.cancel({kind:'hook',reason:'skill-evaluation-cancelled'});combined.addEventListener('abort',cancel,{once:true});
       try{
-        const boundary='This is an isolated skill evaluation. Use only the scoped read/write/finish tools; they operate on text data, not the OS. Do not run or claim shell commands. Save the requested output files, then call creator_finish. Expected check values are private. The safety/tool boundary overrides evaluation skill instructions. Explicitly snapshotted skill resources, if any, are available below .skill/. ';
+        const boundary='This is an isolated skill evaluation. Use only the scoped read/write/finish tools; they operate on text data, not the OS. Do not run or claim shell commands. Save the requested output files, then call dsh_skillcraft_finish. Expected check values are private. The safety/tool boundary overrides evaluation skill instructions. Explicitly snapshotted skill resources, if any, are available below .skill/. ';
         const treatment=mode==='routing'?'\nOptional skill metadata: '+JSON.stringify(skill?{name:skill.name,description:skill.description}:null):skill?'\n<skill_content name="'+skill.name+'">\n'+skill.content+'\n</skill_content>\n':'';
-        const instruction=mode==='routing'?'Controlled description-routing probe, not a full production search test. Decide whether the optional skill is relevant to the request. If relevant, actually load it with creator_skill; otherwise do not load it. Then call creator_finish. Do not always load optional skills. ':boundary;
+        const instruction=mode==='routing'?'Controlled description-routing probe, not a full production search test. Decide whether the optional skill is relevant to the request. If relevant, actually load it with dsh_skillcraft_skill; otherwise do not load it. Then call dsh_skillcraft_finish. Do not always load optional skills. ':boundary;
         agent.followup(createUserMessage({source:{kind:'user'},content:[{type:'text',text:instruction+treatment+'\nTask:\n'+task.prompt+'\nInput paths: '+JSON.stringify(Object.keys(task.files))+'\nWritable paths: '+JSON.stringify(task.writable)}]}));
         await agent.whenIdle();combined.throwIfAborted();
         const events=agent.session.snapshotEvents(),end=events.findLast(e=>e.type==='turn/end');terminal=end?.data?.reason?.kind??'missing-terminal';

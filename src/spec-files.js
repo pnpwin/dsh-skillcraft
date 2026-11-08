@@ -24,7 +24,7 @@ export function prepareSpec(specPath,workspace){
 }
 function ensureDirectory(root,path){if(!inside(root,path))throw Error('output-path-denied');let current=root;for(const part of relative(root,path).split('/').filter(Boolean)){current=join(current,part);if(existsSync(current)){if(!inside(root,realpathSync(current)))throw Error('output-path-denied');}else mkdirSync(current);}}
 export function createOutputRoot(workspace,runId){
-  if(!/^skill-eval-[a-z0-9-]+$/.test(runId))throw Error('invalid-run-id');const root=realpathSync(workspace),parent=join(root,'.dsh-skill-creator','runs');ensureDirectory(root,parent);if(!inside(root,realpathSync(parent)))throw Error('output-path-denied');const dir=join(parent,runId);mkdirSync(dir);return dir;
+  if(!/^skill-eval-[a-z0-9-]+$/.test(runId))throw Error('invalid-run-id');const root=realpathSync(workspace),parent=join(root,'.dsh-skillcraft','runs');ensureDirectory(root,parent);if(!inside(root,realpathSync(parent)))throw Error('output-path-denied');const dir=join(parent,runId);mkdirSync(dir);return dir;
 }
 export function saveArtifact(root,name,value){
   if(!relativePath(name))throw Error('artifact-path-denied');const target=resolve(root,name);if(!inside(root,target))throw Error('artifact-path-denied');ensureDirectory(root,dirname(target));if(!inside(root,realpathSync(dirname(target))))throw Error('artifact-path-denied');writeFileSync(target,typeof value==='string'?value:JSON.stringify(value,null,2)+'\n',{flag:'wx'});return target;

@@ -1,4 +1,4 @@
-// Adapted from pnpwin/dsh-skill-loop (MIT); see LICENSES/dsh-skill-loop-MIT.txt.
+// Adapted from pnpwin/dsh-dsh-skillgrowth (MIT); see LICENSES/dsh-dsh-skillgrowth-MIT.txt.
 import {createRequire} from 'node:module';
 import {realpathSync} from 'node:fs';
 import {isAbsolute,join} from 'node:path';

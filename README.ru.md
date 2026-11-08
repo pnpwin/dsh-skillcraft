@@ -1,10 +1,10 @@
-# Создание skills в DSH
+# DSH Skillcraft
 
-**v0.1.2 — GitHub release:** пакет, репозиторий и provider называются `dsh-skill-creator`; имя скилла и инструмент `skill_eval` сохранены. Scoped case tools — `creator_*`, новые результаты — `.dsh-skill-creator/runs/`. Старые эксперименты не удаляются и не переписываются. Это переименование и упаковка, не новое доказанное повышение качества.
+**v0.1.3 — DSH Skillcraft:** пакет, репозиторий, provider и skill — `dsh-skillcraft`. Model tool — `dsh_skillcraft`, изолированные case tools — `dsh_skillcraft_*`. Новые результаты — `.dsh-skillcraft/runs/`; прежние эксперименты сохранены. Меняются имена, не методика и не доказательства качества. [Миграция](docs/release-v0.1.3.md).
 
 Код, build/CLI/bench scripts — только в `src/`. В корне остаются документация, manifests и metadata для DSH. Каталоги `tests/`, `locale/` и ресурсов не переносятся. [Проверки и ограничения качества](docs/validation-v0.1.2.md).
 
-**`dsh-skill-creator`** — создание и проверка навыков в DSH.
+**`dsh-skillcraft`** — создание и проверка навыков в DSH.
 
 Цикл: назначение → черновик → реальное поведение агента без навыка → RED/GREEN/REFACTOR → проверка на новых задачах → улучшение. Падение теста намеренно испорченного кода не заменяет наблюдаемую неудачу baseline-агента.
 
@@ -12,29 +12,29 @@ v0.1.1 убирает историю переноса: основной skill773
 
 ## Возможности
 
-- [Основной skill](src/skills/dsh-skill-creator/SKILL.md) с постепенно загружаемыми ресурсами.
-- Native tool `skill_eval`: парные проверки baseline/with_skill через DSH agentLoop и NativeToolExecutor, штатные фоновые jobs, ограниченный общий бюджет, objective checks, фактические/неизвестные токены и время.
-- [Offline CLI](src/skills/dsh-skill-creator/scripts/cli.js): проверить spec или заново сформировать Markdown, без LLM.
+- [Основной skill](src/skills/dsh-skillcraft/SKILL.md) с постепенно загружаемыми ресурсами.
+- Native tool `dsh_skillcraft`: парные проверки baseline/with_skill через DSH agentLoop и NativeToolExecutor, штатные фоновые jobs, ограниченный общий бюджет, objective checks, фактические/неизвестные токены и время.
+- [Offline CLI](src/skills/dsh-skillcraft/scripts/cli.js): проверить spec или заново сформировать Markdown, без LLM.
 - [Русские метаданные](locale/ru.json), [английские метаданные](locale/en.json), оригинальная [иконка](src/icon.svg).
 
-Evaluator не исполняет сгенерированный код, не публикует навыки и не изменяет библиотеку или политику skill-loop. В skill-loop подключён отдельно версионируемый компактный набор правил авторинга.
+Evaluator не исполняет сгенерированный код, не публикует навыки и не изменяет библиотеку или политику dsh-skillgrowth. В dsh-skillgrowth подключён отдельно версионируемый компактный набор правил авторинга.
 
 ## Установка
 
 DSH0.2.2-rc.1, Node>=22, без runtime npm dependencies и install/prepare hooks. Устанавливать только через Plugin Manager:
 
 ```json
-{"action":"install_bundle","target":"github:pnpwin/dsh-skill-creator#v0.1.2","enabled":true}
+{"action":"install_bundle","target":"github:pnpwin/dsh-skillcraft#v0.1.3","enabled":true}
 ```
 
-Сначала загрузить `dsh-skill-creator` штатным инструментом skills, затем читать [методику native проверки](src/skills/dsh-skill-creator/references/evaluation.md).
+Сначала загрузить `dsh-skillcraft` штатным инструментом skills, затем читать [методику native проверки](src/skills/dsh-skillcraft/references/evaluation.md).
 
 ```json
 {"action":"validate","specPath":"evals.json"}
 {"action":"run","specPath":"evals.json","split":"train","maxCalls":18,"timeoutMs":300000}
 ```
 
-Это аргументы `skill_eval`. Validate не вызывает модель. Run — явно платная проверка с native jobId; получить результат через `job_output`, остановить через `job_kill`. Не тратить исходный cap заново на каждой итерации: сумма baseline, candidate, повторов и reviewer должна оставаться в согласованном бюджете. Для итоговой проверки использовать split holdout; не подгонять навык по её результатам.
+Это аргументы `dsh_skillcraft`. Validate не вызывает модель. Run — явно платная проверка с native jobId; получить результат через `job_output`, остановить через `job_kill`. Не тратить исходный cap заново на каждой итерации: сумма baseline, candidate, повторов и reviewer должна оставаться в согласованном бюджете. Для итоговой проверки использовать split holdout; не подгонять навык по её результатам.
 
 ## Что именно проверяет runner
 

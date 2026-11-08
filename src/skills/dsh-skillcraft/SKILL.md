@@ -1,9 +1,9 @@
 ---
-name: dsh-skill-creator
+name: dsh-skillcraft
 description: Create, evaluate and improve DSH skills. Use for creating a new skill, repairing an existing skill, testing when it should trigger, or checking whether it improves real agent work versus a no-skill or prior-version baseline.
 ---
 
-# DSH skill creator
+# DSH Skillcraft
 
 <!-- Modified DSH edition; Apache-2.0 AND MIT. -->
 
@@ -11,7 +11,7 @@ description: Create, evaluate and improve DSH skills. Use for creating a new ski
 
 Produce a discoverable, usable skill and evidence about its effects. A valid document or a passing code regression is not proof that an agent benefits from the skill. The unit under test is **agent behavior with versus without the skill**, on the same task and inputs.
 
-Use existing DSH tools and permissions. Do not read credential files, start a replacement server, grant tools or publish a skill merely to make an evaluation pass. `skill_eval` is a separate explicit paid workbench; it does not change skill-loop mode, confirm evidence, or approve candidates. Case child sessions are subagents excluded from production learning.
+Use existing DSH tools and permissions. Do not read credential files, start a replacement server, grant tools or publish a skill merely to make an evaluation pass. `dsh_skillcraft` is a separate explicit paid workbench; it does not change dsh-skillgrowth mode, confirm evidence, or approve candidates. Case child sessions are subagents excluded from production learning.
 
 ## 1. Capture intent
 
@@ -40,9 +40,9 @@ The built-in runner safely supports text-file tasks and finite declarative check
 
 ## 4. RED → GREEN → REFACTOR
 
-1. Validate the JSON spec using `skill_eval` action `validate` (no model calls).
+1. Validate the JSON spec using `dsh_skillcraft` action `validate` (no model calls).
 2. Obtain user approval for the bounded paid experiment when not already covered by the request. Set a total logical-call cap; count failures and both arms.
-3. Run `skill_eval` action `run`; collect its native job with `job_output`, cancel via `job_kill`. Continue useful independent work rather than polling or sleeping.
+3. Run `dsh_skillcraft` action `run`; collect its native job with `job_output`, cancel via `job_kill`. Continue useful independent work rather than polling or sleeping.
 4. **RED:** inspect actual baseline agent behavior, outputs and failing assertions. A deliberately broken input function alone is not a baseline agent failure.
 5. If baseline already succeeds, report that honestly. Investigate costs/variance or choose a genuinely different task; do not manufacture failure, weaken baseline tools, or force a skill.
 6. **GREEN:** if there is an observed deficiency, put the smallest reusable correction into the skill, not into case inputs or expected answers. Run the same paired train cases against the frozen baseline.

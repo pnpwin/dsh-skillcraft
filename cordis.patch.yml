@@ -1,4 +1,4 @@
 - insert:
-    - id: dsh-skill-creator
-      name: '@pnpwin/dsh-skill-creator'
+    - id: dsh-skillcraft
+      name: '@pnpwin/dsh-skillcraft'
       config: {}

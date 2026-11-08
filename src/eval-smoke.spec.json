@@ -1,7 +1,7 @@
 {
   "schemaVersion":1,
   "mode":"task",
-  "skill":{"name":"dsh-skill-creator","description":"Create and evaluate DSH skills with real agent baselines, objective checks, paired comparisons and bounded improvement.","contentPath":"skills/dsh-skill-creator/SKILL.md","resources":["skills/dsh-skill-creator/references/evaluation.md","skills/dsh-skill-creator/references/writing.md","skills/dsh-skill-creator/references/review.md"]},
+  "skill":{"name":"dsh-skillcraft","description":"Create and evaluate DSH skills with real agent baselines, objective checks, paired comparisons and bounded improvement.","contentPath":"skills/dsh-skillcraft/SKILL.md","resources":["skills/dsh-skillcraft/references/evaluation.md","skills/dsh-skillcraft/references/writing.md","skills/dsh-skillcraft/references/review.md"]},
   "baselineSkill":null,
   "repetitions":1,
   "seed":42,
