@@ -1,0 +1,16 @@
+.release/
+.dsh-skill-*/
+node_modules/
+src/IMPLEMENTATION-STATUS.md
+CONTRACT.md
+src/validation/
+src/quality-*.js
+src/capture-validation.js
+src/verify-native-results.js
+docs/quality-v0.1.1.md
+docs/validation-v0.1.0.md
+.DS_Store
+.env
+.env.*
+.credentials*
+*.log

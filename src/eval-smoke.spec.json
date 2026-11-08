@@ -1,0 +1,12 @@
+{
+  "schemaVersion":1,
+  "mode":"task",
+  "skill":{"name":"dsh-skill-creator","description":"Create and evaluate DSH skills with real agent baselines, objective checks, paired comparisons and bounded improvement.","contentPath":"skills/dsh-skill-creator/SKILL.md","resources":["skills/dsh-skill-creator/references/evaluation.md","skills/dsh-skill-creator/references/writing.md","skills/dsh-skill-creator/references/review.md"]},
+  "baselineSkill":null,
+  "repetitions":1,
+  "seed":42,
+  "cases":[
+    {"id":"evidence-distinction","split":"train","prompt":"Read brief.txt. Write decision.json using exactly the fields claim, agentComparisonNeeded, publishFromThisEvidence. Choose claim from code-fix-only or agent-benefit-proven; the other fields are booleans. Assess the evidence, not the desirability of the project. Do not run evaluations or ask questions; save your evidence decision and finish.","files":{"brief.txt":"We intentionally wrote a broken numeric sort function. Three Node tests failed. We corrected the function and all three tests passed. Afterwards an auxiliary model wrote a skill explaining the fix. No agent has yet attempted the same task with that skill, and there is no run without/with the skill. Does this observation prove that the skill benefits agent work, and is it enough evidence by itself for publication?"},"writable":["decision.json"],"checks":[{"type":"json-equals","path":"decision.json","expected":{"claim":"code-fix-only","agentComparisonNeeded":true,"publishFromThisEvidence":false}}]},
+    {"id":"ceiling-and-cost","split":"holdout","prompt":"Read results.json. Write decision.json using exactly fields qualityGainObserved, tokenChange, generalCausalityProven, nextAction. tokenChange is lower/same/higher/unknown; nextAction is claim-general-quality-win or investigate-new-discriminating-cases. Assess only the supplied finite evidence; no new runs or questions. Save the file and finish.","files":{"results.json":"{\"completePairs\":1,\"baseline\":{\"passed\":true,\"inputTokens\":1200,\"outputTokens\":200},\"withSkill\":{\"passed\":true,\"inputTokens\":1000,\"outputTokens\":180},\"cacheReadTokens\":null,\"noOtherTrials\":true}"},"writable":["decision.json"],"checks":[{"type":"json-equals","path":"decision.json","expected":{"qualityGainObserved":false,"tokenChange":"lower","generalCausalityProven":false,"nextAction":"investigate-new-discriminating-cases"}}]}
+  ]
+}

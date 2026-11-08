@@ -1,0 +1,4 @@
+- insert:
+    - id: dsh-skill-creator
+      name: '@pnpwin/dsh-skill-creator'
+      config: {}
